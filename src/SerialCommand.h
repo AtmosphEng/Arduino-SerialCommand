@@ -47,6 +47,7 @@ class SerialCommand {
     SerialCommand();      // Constructor
     void addCommand(const char *command, void(*function)());  // Add a command to the processing dictionary.
     void setDefaultHandler(void (*function)(const char *));   // A handler to call when no valid command received.
+    //void setDefaultHandler(void (*function));   // A handler to call when no valid command received.
 
     void readSerial();    // Main entry point.
     void clearBuffer();   // Clears the input buffer.
@@ -63,8 +64,10 @@ class SerialCommand {
 
     // Pointer to the default handler function
     void (*defaultHandler)(const char *);
+    //void (*defaultHandler);
 
-    char delim[2]; // null-terminated list of character to be used as delimeters for tokenizing (default " ")
+    //char delim[2]; // null-terminated list of character to be used as delimeters for tokenizing (default " ")
+    char delim[3]; // null-terminated list of character to be used as delimeters for tokenizing (default " ")
     char term;     // Character that signals end of command (default '\n')
 
     char buffer[SERIALCOMMAND_BUFFER + 1]; // Buffer of stored characters while waiting for terminator character

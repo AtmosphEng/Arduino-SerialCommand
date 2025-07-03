@@ -33,7 +33,9 @@ SerialCommand::SerialCommand()
     term('\n'),           // default terminator for commands, newline character
     last(NULL)
 {
-  strcpy(delim, " "); // strtok_r needs a null-terminated string
+  //strcpy(delim, " "); // strtok_r needs a null-terminated string
+  //strcpy(delim, ","); // comma to separate (var:)value sets. () is optional.
+  strcpy(delim, ":,"); // comma to separate (var:)value sets. () is optional.
   clearBuffer();
 }
 
@@ -61,7 +63,8 @@ void SerialCommand::addCommand(const char *command, void (*function)()) {
  * isn't in the list of commands.
  */
 void SerialCommand::setDefaultHandler(void (*function)(const char *)) {
-  defaultHandler = function;
+//void SerialCommand::setDefaultHandler(void (*function)) {
+		defaultHandler = function;
 }
 
 
@@ -110,6 +113,7 @@ void SerialCommand::readSerial() {
         }
         if (!matched && (defaultHandler != NULL)) {
           (*defaultHandler)(command);
+          //(*defaultHandler);
         }
       }
       clearBuffer();
