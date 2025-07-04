@@ -16,8 +16,8 @@ void LED_off();
 void sayHello();
 void processCommand();
 // void unrecognised(const char *command);
-void serialPlotter(const char *command);
-// void serialPlotter();
+void serialPlotterParser(const char *command);
+// void serialPlotterParser();
 
 void setup() {
 	pinMode(arduinoLED, OUTPUT);	 // Configure the onboard LED for output
@@ -31,9 +31,9 @@ void setup() {
 	sCmd.addCommand("OFF", LED_off);			 // Turns LED off
 	sCmd.addCommand("HELLO", sayHello);		 // Echos the string argument back
 	sCmd.addCommand("P", processCommand);	 // Converts two arguments to integers and echos them back
-	sCmd.setDefaultHandler(serialPlotter); // Handler for command that isn't matched  (says "What?")
+	sCmd.setDefaultHandler(serialPlotterParser); // Handler for command that isn't matched  (says "What?")
 
-	Serial.println("Ready");
+	// Serial.println("Ready");
 }
 
 void loop() {
@@ -88,52 +88,30 @@ void processCommand() {
 
 // This gets set as the default handler, and gets called when no other command matches.
 // void unregnised(const char *command) {
-void serialPlotter(const char *command) {
+//
+// Parses Arduino Serial plotter character (IDE 1) strings in to integer numbers. Discards any label: present.
+// Delimiters tested for are : (colon) suffix for a label, and , (comma) between values.
+//
+void serialPlotterParser(const char *command) {
 	int aNumber;
 	char *arg;
 
-#if (0)
-	arg = (char *)command;
+	arg = (char *)command; // first time only, due to program design.
 
-	// Serial.println("We're in serialPlotter");
+	while (arg != NULL) { // while valid line data is still available.
 
-	if (arg != NULL) {
-
-		if (isdigit(arg[0])) { //  // if first char is a digit (number !)
-
+		if (isdigit(arg[0])) { // if first char is a digit (i.e. digit is a number character)
 			aNumber = atoi(arg); // Converts a char string to an integer
-
-			if (aNumber >= 0) {
-				Serial.print(" # "); // cosmetic separator
-				Serial.print(aNumber);
-			}
-		}
-	}
-#endif
-
-	for (int idx = 1; idx < 5; idx++) { // FIXED NUMBER OF TRIES
-		if (idx == 1) {
-			arg = (char *)command;
-		} else {
-			arg = sCmd.next();
+			Serial.print(" # ");	 // COSMETIC separator
+			Serial.print(aNumber);
 		}
 
-		if (arg != NULL) {
+		arg = sCmd.next(); // get next data if there is more to process on the current line.
 
-			if (isdigit(arg[0])) { // if first char is a digit (number !)
-
-				aNumber = atoi(arg); // Converts a char string to an integer
-
-				if (1) {
-					Serial.print(" $ "); // cosmetic separator
-					Serial.print(aNumber);
-				}
-			}
-		}
-	}
+	} // while
 
 	Serial.println(); // finish with newline.
 
-} // serialPlotter
+} // serialPlotterParser
 
 // END_OF_FILE
