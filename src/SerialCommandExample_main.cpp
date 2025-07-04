@@ -88,45 +88,43 @@ void processCommand() {
 
 // This gets set as the default handler, and gets called when no other command matches.
 // void unregnised(const char *command) {
-// void serialPlotter() {
 void serialPlotter(const char *command) {
 	int aNumber;
 	char *arg;
 
+#if (0)
+	arg = (char *)command;
+
 	// Serial.println("We're in serialPlotter");
 
-	if (command != NULL) {
+	if (arg != NULL) {
 
-		// if (!isdigit(command[1])) { // allow values to be zero. why does this index need to be 1 ?
-		if (1) {
+		if (isdigit(arg[0])) { //  // if first char is a digit (number !)
 
-			aNumber = atoi(command); // Converts a char string to an integer
+			aNumber = atoi(arg); // Converts a char string to an integer
 
-			//if (1) {
-				if (aNumber) {
-					// if (aNumber) {
-				//  Serial.print("argument 1 was: ");
-				// Serial.println(aNumber);
+			if (aNumber >= 0) {
 				Serial.print(" # "); // cosmetic separator
 				Serial.print(aNumber);
 			}
 		}
 	}
+#endif
 
-	for (int idx = 1; idx < 8; idx++) { // FIXED NUMBER OF TRIES
-		arg = sCmd.next();
+	for (int idx = 1; idx < 5; idx++) { // FIXED NUMBER OF TRIES
+		if (idx == 1) {
+			arg = (char *)command;
+		} else {
+			arg = sCmd.next();
+		}
 
 		if (arg != NULL) {
 
 			if (isdigit(arg[0])) { // if first char is a digit (number !)
-			//if (1) {
 
 				aNumber = atoi(arg); // Converts a char string to an integer
 
 				if (1) {
-					// if (aNumber) {
-					//  Serial.print("argument 1 was: ");
-					// Serial.println(aNumber);
 					Serial.print(" $ "); // cosmetic separator
 					Serial.print(aNumber);
 				}
