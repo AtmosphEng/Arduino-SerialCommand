@@ -32,7 +32,8 @@ void setup() {
 	sCmd.addCommand("HELLO", sayHello);		 // Echos the string argument back
 	sCmd.addCommand("P", processCommand);	 // Converts two arguments to integers and echos them back
 	sCmd.setDefaultHandler(serialPlotter); // Handler for command that isn't matched  (says "What?")
-	//Serial.println("Ready");
+
+	Serial.println("Ready");
 }
 
 void loop() {
@@ -92,64 +93,49 @@ void serialPlotter(const char *command) {
 	int aNumber;
 	char *arg;
 
-	//Serial.println("We're in serialPlotter");
+	// Serial.println("We're in serialPlotter");
 
-	// if (arg != NULL) {
-	if (1) {
-		// aNumber = atoi(arg);    // Converts a char string to an integer
-		aNumber = atoi(command); // Converts a char string to an integer
-		if (aNumber) {
-			//Serial.print("argument 0 was: ");
-			Serial.println(aNumber);
-		}
-		// Serial.println(command);
-		// Serial.println(0); // use 0 to mean a var label not to be processed.
-	}
+	if (command != NULL) {
 
-	arg = sCmd.next();
-	if (arg != NULL) {
-		aNumber = atoi(arg); // Converts a char string to an integer
-		if (aNumber) {
-			//Serial.print("argument 1 was: ");
-			Serial.println(aNumber);
+		// if (!isdigit(command[1])) { // allow values to be zero. why does this index need to be 1 ?
+		if (1) {
+
+			aNumber = atoi(command); // Converts a char string to an integer
+
+			//if (1) {
+				if (aNumber) {
+					// if (aNumber) {
+				//  Serial.print("argument 1 was: ");
+				// Serial.println(aNumber);
+				Serial.print(" # "); // cosmetic separator
+				Serial.print(aNumber);
+			}
 		}
 	}
 
-	arg = sCmd.next();
-	if (arg != NULL) {
-		aNumber = atoi(arg);
-		if (aNumber) {
-			//Serial.print("argument 2 was: ");
-			Serial.println(aNumber);
+	for (int idx = 1; idx < 8; idx++) { // FIXED NUMBER OF TRIES
+		arg = sCmd.next();
+
+		if (arg != NULL) {
+
+			if (isdigit(arg[0])) { // if first char is a digit (number !)
+			//if (1) {
+
+				aNumber = atoi(arg); // Converts a char string to an integer
+
+				if (1) {
+					// if (aNumber) {
+					//  Serial.print("argument 1 was: ");
+					// Serial.println(aNumber);
+					Serial.print(" $ "); // cosmetic separator
+					Serial.print(aNumber);
+				}
+			}
 		}
 	}
 
-	arg = sCmd.next();
-	if (arg != NULL) {
-		aNumber = atoi(arg);
-		if (aNumber) {
-			//Serial.print("argument 3 was: ");
-			Serial.println(aNumber);
-		}
-	}
+	Serial.println(); // finish with newline.
 
-	arg = sCmd.next();
-	if (arg != NULL) {
-		aNumber = atoi(arg);
-		if (aNumber) {
-			//Serial.print("argument 4 was: ");
-			Serial.println(aNumber);
-		}
-	}
-
-	arg = sCmd.next();
-	if (arg != NULL) {
-		aNumber = atoi(arg);
-		if (aNumber) {
-			//Serial.print("argument 5 was: ");
-			Serial.println(aNumber);
-		}
-	}
-}
+} // serialPlotter
 
 // END_OF_FILE
